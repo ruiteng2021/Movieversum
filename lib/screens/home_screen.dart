@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:movieversum/widgets/destination_carousel.dart';
+import 'package:movieversum/widgets/hotel_carousel.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -9,6 +11,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
+  int _currentTab = 0;
   List<IconData> _icons = [
     FontAwesomeIcons.plane,
     FontAwesomeIcons.bed,
@@ -53,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
             Padding(
               padding: const EdgeInsets.only(left: 20.0, right: 120.0),
               child: Text(
-                'what would you like to find?',
+                'What would you like to find?',
                 style: TextStyle(
                   fontSize: 30.0,
                   fontWeight: FontWeight.bold,
@@ -75,8 +78,41 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             SizedBox(height: 20.0),
             DestinationCarousel(),
+            SizedBox(height: 20.0),
+            HotelCarousel(),
           ],
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentTab,
+        onTap: (int value) {
+          setState(() {
+            _currentTab = value;
+          });
+        },
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.search,
+              size: 30.0,
+            ),
+            title: SizedBox.shrink(),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.local_pizza,
+              size: 30.0,
+            ),
+            title: SizedBox.shrink(),
+          ),
+          BottomNavigationBarItem(
+            icon: CircleAvatar(
+              radius: 15.0,
+              backgroundImage: NetworkImage("https://i.imgur.com/zuG2bGQ.jpg"),
+            ),
+            title: SizedBox.shrink(),
+          ),
+        ],
       ),
     );
   }
