@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:movieversum/models/movie_data.dart';
@@ -55,22 +56,15 @@ class _MoviesState extends State<Movies> {
     Uri uri = Uri.parse(
         "https://api.themoviedb.org/3/movie/${super.widget.movieType}?api_key=d194eb72915bc79fac2eb1a70a71ddd3&language=en-US&page=$currentPage");
 
-    // if (super.widget.movieType.compareTo('trending') == 0) {
-    //   print("selection : ${super.widget.movieType}");
-    //   uri = Uri.parse(
-    //       "https://api.themoviedb.org/3/${super.widget.movieType}/all/day?api_key=d194eb72915bc79fac2eb1a70a71ddd3&language=en-US&page=$currentPage");
-    // }
-
     final response = await http.get(uri);
 
     if (response.statusCode == 200) {
       print("Url: $uri");
       final result = movieDataFromJson(response.body);
-
       if (isRefresh) {
         movies = result.results;
       } else {
-        // print(jsonEncode(result.data));
+        // print(jsonEncode(result.results));
         movies.addAll(result.results);
         print("passengers Length: ");
         print(movies.length);

@@ -95,12 +95,12 @@ Widget _buildCard(Movie movie, context) {
       //       Hero(
       //         tag: movie.id,
       //         child: Container(
-      //           height: 120.0,
-      //           width: 80.0,
+      //           height: 180.0,
+      //           width: 250.0,
       //           decoration: BoxDecoration(
       //             image: DecorationImage(
-      //               image: NetworkImage("https://image.tmdb.org/t/p/w500/" +
-      //                   movie.backdropPath),
+      //               image: NetworkImage(
+      //                   "https://image.tmdb.org/t/p/original/${movie.backdropPath}"),
       //               fit: BoxFit.cover,
       //             ),
       //           ),

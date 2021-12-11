@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:movieversum/models/movie_data.dart';
 import 'package:movieversum/views/movie.dart';
 
 class Home extends StatefulWidget {
@@ -16,14 +15,16 @@ class _HomeState extends State<Home> {
     screens.add(new Movies(movieType: "popular"));
     screens.add(new Movies(movieType: "upcoming"));
     screens.add(new Movies(movieType: "top_rated"));
-    screens.add(
-      new Center(
-        child: Text(
-          "Search",
-          style: TextStyle(fontSize: 20),
-        ),
-      ),
-    );
+    screens.add(new Movies(movieType: "now_playing"));
+    // screens.add(new Trendings(trendingType: "trending"));
+    // screens.add(
+    //   new Center(
+    //     child: Text(
+    //       "Search",
+    //       style: TextStyle(fontSize: 20),
+    //     ),
+    //   ),
+    // );
     return Scaffold(
       bottomNavigationBar: buildBottomBar(),
       body: buildPages(screens),
@@ -52,8 +53,8 @@ class _HomeState extends State<Home> {
           label: 'Top Rated',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.search),
-          label: 'Searching',
+          icon: Icon(Icons.movie_filter),
+          label: 'Now Playing',
         ),
       ],
       onTap: (int index) => setState(() => this._selectedIndex = index),
