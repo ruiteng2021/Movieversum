@@ -1,0 +1,197 @@
+import 'package:flutter/material.dart';
+import 'package:movieversum/views/movie.dart';
+
+class Home2 extends StatefulWidget {
+  @override
+  _Home2State createState() => _Home2State();
+}
+
+class _Home2State extends State<Home2> {
+  // Map cityLocation = {
+  //   'city': 'London',
+  //   'city_slug': 'london',
+  //   'state': 'ON',
+  //   'country': 'Canada',
+  // };
+
+  int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+    print("index: $index");
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    List<Widget> screens = [];
+    // cityLocation = cityLocation.isNotEmpty
+    //     ? cityLocation
+    //     : ModalRoute.of(context)?.settings.arguments as Map;
+
+    // print("XXXX ${cityLocation["city"]} XXXXX");
+
+    // List<String> vendorTitles = [
+    //   'Dispensaries in ${cityLocation["city"]}',
+    //   'Featured Deliveries in ${cityLocation["city"]}',
+    //   'Weed Deals in ${cityLocation["city"]}',
+    //   'Search',
+    // ];
+
+    screens.add(new Movies());
+    // screens
+    //     .add(new Vendors(selection: "deliveries", selectedCity: cityLocation));
+    // screens.add(new WeedDeals());
+
+    screens.add(
+      new Center(
+        child: Text(
+          'city2',
+          style: TextStyle(fontSize: 20),
+        ),
+      ),
+    );
+    screens.add(
+      new Center(
+        child: Text(
+          'city3',
+          style: TextStyle(fontSize: 20),
+        ),
+      ),
+    );
+    screens.add(
+      new Center(
+        child: Text(
+          'city4',
+          style: TextStyle(fontSize: 20),
+        ),
+      ),
+    );
+    return Scaffold(
+      // appBar: AppBar(
+      //   // leadingWidth: MediaQuery.of(context).size.width * 0.33,
+      //   leadingWidth: 80,
+      //   toolbarHeight: 60,
+      //   shape: Border(
+      //     bottom: BorderSide(
+      //       color: const Color(0xff197826),
+      //       width: 4,
+      //     ),
+      //   ),
+      //   // elevation: 4,
+      //   leading: Container(
+      //     padding: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0.0),
+      //     child: Image.asset('assets/tmdblogo2.png', fit: BoxFit.contain),
+      //   ),
+      //   centerTitle: true,
+      //   title: Container(
+      //     width: MediaQuery.of(context).size.width * 0.33,
+      //     child: Text(
+      //       // 'Searching Canada Wide',
+      //       'city5',
+      //       // style: GoogleFonts.lato(
+      //       //   color: Colors.black,
+      //       //   fontSize: 20.0,
+      //       //   fontWeight: FontWeight.bold,
+      //       // ),
+      //       maxLines: 2,
+      //       overflow: TextOverflow.ellipsis,
+      //       softWrap: true,
+      //       textAlign: TextAlign.center,
+      //     ),
+      //   ),
+      //   actions: <Widget>[
+      //     IconButton(
+      //       icon: Icon(Icons.location_on_outlined),
+      //       color: Colors.black,
+      //       iconSize: 30.0,
+      //       onPressed: () async {
+      //         // dynamic result = await Navigator.of(context).push(
+      //         //     MaterialPageRoute(builder: (context) => NearstCities()));
+      //         // setState(() {
+      //         //   print(result);
+      //         //   cityLocation = result != null
+      //         //       ? {
+      //         //           'city': result['city'],
+      //         //           'city_slug': result['city_slug'],
+      //         //           'state': result['state'],
+      //         //           'country': result['country'],
+      //         //         }
+      //         //       : {
+      //         //           'city': 'London',
+      //         //           'city_slug': 'london',
+      //         //           'state': 'ON',
+      //         //           'country': 'Canada',
+      //         //         };
+      //         //   print(cityLocation);
+      //         // });
+      //       },
+      //     ),
+      //     Padding(
+      //       padding: const EdgeInsets.fromLTRB(0.0, 0.0, 5.0, 0.0),
+      //       child: IconButton(
+      //         color: Colors.black,
+      //         icon: Icon(Icons.contact_mail),
+      //         tooltip: "Mail Oder",
+      //         iconSize: 30.0,
+      //         onPressed: () {
+      //           // Navigator.of(context).push(
+      //           //     MaterialPageRoute(builder: (context) => MailOrderDeals()));
+      //         },
+      //       ),
+      //     ),
+      //   ],
+      //   backgroundColor: Colors.green[100], //elevation value of appbar
+      // ),
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: screens,
+      ),
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          border: Border(
+            top: BorderSide(
+              // color: const Color(0xff197826),
+              color: const Color(0xff81C784),
+              width: 4,
+            ),
+          ),
+        ),
+        child: BottomNavigationBar(
+          // type: BottomNavigationBarType.fixed,
+          // backgroundColor: Colors.green[100],
+          selectedItemColor: Color(0xff197826),
+          unselectedItemColor: Colors.blueGrey,
+          selectedFontSize: 18,
+          showUnselectedLabels: true,
+          showSelectedLabels: true,
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.storefront_outlined,
+                // color: Colors.black,
+              ),
+              label: 'Dispensaries',
+              backgroundColor: Color(0xffC8E6C9),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.local_shipping_outlined),
+              label: 'Deliveries',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.shopping_bag_outlined),
+              label: 'Deals',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.search),
+              label: 'Search',
+            ),
+          ],
+          currentIndex: _selectedIndex,
+          onTap: _onItemTapped,
+        ),
+      ),
+    );
+  }
+}
