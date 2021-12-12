@@ -2,14 +2,12 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:movieversum/models/movie_data.dart';
-import 'package:movieversum/views/movie_info.dart';
-// import 'package:MovieCard/views/vendor_product.dart';
+import 'package:movieversum/models/trending_data.dart';
 
-class MovieCard extends StatelessWidget {
-  final Movie movie;
-  MovieCard({
-    required this.movie,
+class TrendingCard extends StatelessWidget {
+  final Trending trending;
+  TrendingCard({
+    required this.trending,
   });
   @override
   Widget build(BuildContext context) {
@@ -17,25 +15,29 @@ class MovieCard extends StatelessWidget {
       // width: MediaQuery.of(context).size.width - 30.0,
       // height: MediaQuery.of(context).size.height - 20.0,
 
-      child: _buildCard(movie, context),
+      child: _buildCard(trending, context),
     );
   }
 }
 
-Widget _buildCard(Movie movie, context) {
+Widget _buildCard(Trending trending, context) {
   return Padding(
     padding: EdgeInsets.only(top: 5.0, bottom: 5.0, left: 5.0, right: 5.0),
     child: InkWell(
       onTap: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => MovieInfo(movie: movie),
-          ),
-        );
+        // Navigator.of(context).push(MaterialPageRoute(
+        //     builder: (context) => VendorProduct(
+        //           vendorSlug: vendor.slug,
+        //           vendorImagePath: vendor.logoUrl,
+        //           vendorDescription: vendor.description ?? "",
+        //           vendorName: vendor.name,
+        //           featured: vendor.isFeatured,
+        //         )));
       },
       child: ClipRRect(
         child: CachedNetworkImage(
-          imageUrl: 'https://image.tmdb.org/t/p/original/${movie.posterPath}',
+          imageUrl:
+              'https://image.tmdb.org/t/p/original/${trending.backdropPath}',
           imageBuilder: (context, imageProvider) {
             return Container(
               width: 180,
