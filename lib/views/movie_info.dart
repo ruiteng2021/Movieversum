@@ -1,5 +1,13 @@
+import 'dart:convert';
+
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:movieversum/models/credit_data.dart';
 import 'package:movieversum/models/movie_data.dart';
+import 'package:movieversum/controllers/get_api_info.dart';
+import 'package:movieversum/views/widget/credits.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MovieInfo extends StatefulWidget {
   final Movie movie;
@@ -12,6 +20,48 @@ class MovieInfo extends StatefulWidget {
 }
 
 class _MovieInfoState extends State<MovieInfo> {
+  late GetApiInfo getApiInfo = new GetApiInfo();
+  Map<String, String> dispayData = {};
+  Map<String, dynamic> creditData = {};
+  List<Cast> casts = [];
+  // final credits = CreditData(id: 0, cast: [], crew: []);
+  List<Cast> crews = [];
+  @override
+  void initState() {
+    super.initState();
+    getSingleMovieData(super.widget.movie.id);
+    getCreditInfo(super.widget.movie.id);
+  }
+
+  void getSingleMovieData(int movieId) async {
+    final result = await getApiInfo.getSingleMovieInfo(movieId);
+    dispayData["homepage"] = result!.homepage;
+    dispayData["release date"] = result.releaseDate!.year.toString() +
+        '-' +
+        result.releaseDate!.month.toString() +
+        '-' +
+        result.releaseDate!.day.toString();
+    dispayData["revenue"] = result.revenue.toString();
+    dispayData["runtime"] = result.runtime.toString();
+    dispayData["id"] = result.id.toString();
+    print(dispayData.toString());
+    setState(() {
+      // Your state change code goes here
+    });
+  }
+
+  void getCreditInfo(int movieId) async {
+    final result = await getApiInfo.getCreditInfo(movieId);
+    casts = result!.cast!;
+    crews = result.crew!;
+    crews..toSet().toList();
+    print("casts: ${jsonEncode(casts)}");
+    print("crews: ${jsonEncode(crews)}");
+    setState(() {
+      // Your state change code goes here
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,8 +81,14 @@ class _MovieInfoState extends State<MovieInfo> {
                 style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.normal),
               ),
               background: GestureDetector(
-                onTap: () {
-                  print("XXXX");
+                onTap: () async {
+                  String? result =
+                      await getApiInfo.getMovieTrailer(super.widget.movie.id);
+                  print("XXXX: $result");
+                  final youtubeUrl = "https://www.youtube.com/embed/${result}";
+                  if (await canLaunch(youtubeUrl)) {
+                    await launch(youtubeUrl);
+                  }
                 },
                 child: Stack(
                   children: <Widget>[
@@ -72,13 +128,13 @@ class _MovieInfoState extends State<MovieInfo> {
               ),
             ),
           ),
-          buildImages(),
+          buildContens(),
         ],
       ),
     );
   }
 
-  Widget buildImages() => Container(
+  Widget buildContens() => Container(
         child: SliverPadding(
           padding: EdgeInsets.all(0.0),
           sliver: SliverList(
@@ -90,7 +146,7 @@ class _MovieInfoState extends State<MovieInfo> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        "Publish Date: " + super.widget.movie.releaseDate,
+                        "Average Rating: ${super.widget.movie.voteAverage.toString()}",
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 14.0,
@@ -99,32 +155,32 @@ class _MovieInfoState extends State<MovieInfo> {
                       SizedBox(
                         width: 5.0,
                       ),
-                      // RatingBar(
-                      //   itemSize: 10.0,
-                      //   initialRating: movie.rating / 2,
-                      //   ratingWidget: RatingWidget(
-                      //     empty: Icon(
-                      //       EvaIcons.star,
-                      //       color: Style.Colors.secondColor,
-                      //     ),
-                      //     full: Icon(
-                      //       EvaIcons.star,
-                      //       color: Style.Colors.secondColor,
-                      //     ),
-                      //     half: Icon(
-                      //       EvaIcons.star,
-                      //       color: Style.Colors.secondColor,
-                      //     ),
-                      //   ),
-                      //   minRating: 1,
-                      //   direction: Axis.horizontal,
-                      //   allowHalfRating: true,
-                      //   itemCount: 5,
-                      //   itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
-                      //   onRatingUpdate: (rating) {
-                      //     print(rating);
-                      //   },
-                      // )
+                      RatingBar(
+                        itemSize: 10.0,
+                        initialRating: super.widget.movie.voteAverage,
+                        ratingWidget: RatingWidget(
+                          empty: Icon(
+                            EvaIcons.star,
+                            color: Color(0xFFf4C10F),
+                          ),
+                          full: Icon(
+                            EvaIcons.star,
+                            color: Color(0xFFf4C10F),
+                          ),
+                          half: Icon(
+                            EvaIcons.star,
+                            color: Color(0xFFf4C10F),
+                          ),
+                        ),
+                        minRating: 1,
+                        direction: Axis.horizontal,
+                        allowHalfRating: true,
+                        itemCount: 5,
+                        itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
+                        onRatingUpdate: (rating) {
+                          print(rating);
+                        },
+                      )
                     ],
                   ),
                 ),
@@ -152,12 +208,105 @@ class _MovieInfoState extends State<MovieInfo> {
                 SizedBox(
                   height: 10.0,
                 ),
-                // MovieInfo(
-                //   id: movie.id,
-                // ),
-                // Casts(
-                //   id: movie.id,
-                // ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Expanded(
+                        child: Text(
+                          'Release Date',
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Text(
+                          'Revenue',
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Text(
+                          'Run Time',
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Expanded(
+                        child: Text(
+                          this.dispayData["release date"].toString(),
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Text(
+                          '\$${this.dispayData["revenue"].toString()}',
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Text(
+                          this.dispayData["runtime"].toString(),
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 20.0,
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(12.0, 8.0, 12.0, 8.0),
+                  child: Text(
+                    "CASTS",
+                    style: TextStyle(
+                        color: Colors.white70,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 12.0),
+                  ),
+                ),
+                Credits(
+                  credits: casts,
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(12.0, 8.0, 12.0, 8.0),
+                  child: Text(
+                    "CREWS",
+                    style: TextStyle(
+                        color: Colors.white70,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 12.0),
+                  ),
+                ),
+                Credits(
+                  credits: crews,
+                ),
                 // SimilarMovies(id: movie.id)
               ],
             ),
