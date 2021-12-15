@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:movieversum/models/credit_data.dart';
+import 'package:movieversum/views/actor_info.dart';
 
 class Credits extends StatefulWidget {
   const Credits({Key? key, required this.credits}) : super(key: key);
@@ -23,7 +24,14 @@ class _CreditsState extends State<Credits> {
             padding: EdgeInsets.only(top: 10.0, right: 8.0),
             width: 100.0,
             child: GestureDetector(
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        ActorInfo(id: super.widget.credits[index].id),
+                  ),
+                );
+              },
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
