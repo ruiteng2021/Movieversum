@@ -6,7 +6,9 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:movieversum/models/credit_data.dart';
 import 'package:movieversum/models/movie_data.dart';
 import 'package:movieversum/controllers/get_api_info.dart';
-import 'package:movieversum/views/widget/credits.dart';
+import 'package:movieversum/models/similar_movies_data.dart';
+import 'package:movieversum/views/widgets/credits.dart';
+import 'package:movieversum/views/widgets/similar_movies.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MovieInfo extends StatefulWidget {
@@ -26,11 +28,13 @@ class _MovieInfoState extends State<MovieInfo> {
   List<Cast> casts = [];
   // final credits = CreditData(id: 0, cast: [], crew: []);
   List<Cast> crews = [];
+  List<SimilarMovie> similarMovie = [];
   @override
   void initState() {
     super.initState();
     getSingleMovieData(super.widget.movie.id);
     getCreditInfo(super.widget.movie.id);
+    getSimilarMovies(super.widget.movie.id);
   }
 
   void getSingleMovieData(int movieId) async {
@@ -62,6 +66,14 @@ class _MovieInfoState extends State<MovieInfo> {
     });
   }
 
+  void getSimilarMovies(int movieId) async {
+    final result = await getApiInfo.GetSimilarMovies(movieId);
+    similarMovie = result!.results!;
+    setState(() {
+      // Your state change code goes here
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,7 +82,7 @@ class _MovieInfoState extends State<MovieInfo> {
         slivers: [
           SliverAppBar(
             backgroundColor: Colors.white10,
-            expandedHeight: 200,
+            expandedHeight: 300,
             floating: true,
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
@@ -307,7 +319,17 @@ class _MovieInfoState extends State<MovieInfo> {
                 Credits(
                   credits: crews,
                 ),
-                // SimilarMovies(id: movie.id)
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(12.0, 8.0, 12.0, 8.0),
+                  child: Text(
+                    "SIMILAR MOVIES",
+                    style: TextStyle(
+                        color: Colors.white70,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 12.0),
+                  ),
+                ),
+                SimilarMovies(similarMovies: this.similarMovie),
               ],
             ),
           ),

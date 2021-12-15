@@ -1,7 +1,10 @@
 import 'dart:ffi';
 
 import 'package:http/http.dart' as http;
+import 'package:movieversum/models/actor_data.dart';
+import 'package:movieversum/models/actor_images.dart';
 import 'package:movieversum/models/credit_data.dart';
+import 'package:movieversum/models/similar_movies_data.dart';
 // import 'package:movieversum/models/movie_data.dart';
 import 'package:movieversum/models/single_movie_data.dart';
 import 'package:movieversum/models/trailer_data.dart';
@@ -50,6 +53,48 @@ class GetApiInfo {
       final response = await http.get(uri);
       print("Url: $uri");
       CreditData result = creditDataFromJson(response.body);
+      return result;
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      return null;
+    }
+  }
+
+  Future<ActorData?> GetActorDetails(int id) async {
+    Uri uri = Uri.parse(
+        "https://api.themoviedb.org/3/person/${id.toString()}?${baseString}");
+    try {
+      final response = await http.get(uri);
+      print("Url: $uri");
+      ActorData result = actorDataFromJson(response.body);
+      return result;
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      return null;
+    }
+  }
+
+  Future<ActorImages?> GetActorImages(int id) async {
+    Uri uri = Uri.parse(
+        "https://api.themoviedb.org/3/person/${id.toString()}/images?${baseString}");
+    try {
+      final response = await http.get(uri);
+      print("Url: $uri");
+      ActorImages result = actorImagesFromJson(response.body);
+      return result;
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      return null;
+    }
+  }
+
+  Future<SimilarMovieData?> GetSimilarMovies(int id) async {
+    Uri uri = Uri.parse(
+        "https://api.themoviedb.org/3/movie/${id.toString()}/similar?${baseString}&page=1");
+    try {
+      final response = await http.get(uri);
+      print("Url: $uri");
+      SimilarMovieData result = similarMovieDataFromJson(response.body);
       return result;
     } catch (error, stacktrace) {
       print("Exception occured: $error stackTrace: $stacktrace");

@@ -2,7 +2,6 @@
 //
 //     final trailerData = trailerDataFromJson(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 TrailerData trailerDataFromJson(String str) =>

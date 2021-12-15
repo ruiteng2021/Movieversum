@@ -71,55 +71,6 @@ Widget _buildCard(Movie movie, context) {
           ),
         ),
       ),
-      // child: Container(
-      //   decoration: BoxDecoration(
-      //       borderRadius: BorderRadius.circular(15.0),
-      //       boxShadow: [
-      //         BoxShadow(
-      //             color: Colors.grey.withOpacity(0.2),
-      //             spreadRadius: 3.0,
-      //             blurRadius: 5.0)
-      //       ],
-      //       color: Colors.white),
-      //   child: Column(
-      //     children: [
-      //       Padding(
-      //           padding: EdgeInsets.all(5.0),
-      //           child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-      //             movie.voteCount > 0
-      //                 ? Icon(Icons.favorite, color: Color(0xFFEF7532))
-      //                 : Icon(Icons.favorite_border, color: Color(0xFFEF7532))
-      //           ])),
-      //       Hero(
-      //         tag: movie.id,
-      //         child: Container(
-      //           height: 180.0,
-      //           width: 250.0,
-      //           decoration: BoxDecoration(
-      //             image: DecorationImage(
-      //               image: NetworkImage(
-      //                   "https://image.tmdb.org/t/p/original/${movie.backdropPath}"),
-      //               fit: BoxFit.cover,
-      //             ),
-      //           ),
-      //         ),
-      //       ),
-      //       SizedBox(height: 2.0),
-      //       Padding(
-      //         padding: const EdgeInsets.all(10.0),
-      //         child: Text(
-      //           movie.title,
-      //           style: TextStyle(
-      //             color: Color(0xFF575E67),
-      //             fontFamily: 'Varela',
-      //             fontSize: 14.0,
-      //           ),
-      //           textAlign: TextAlign.center,
-      //         ),
-      //       ),
-      //     ],
-      //   ),
-      // ),
     ),
   );
 }
