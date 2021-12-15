@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'dart:convert';
 
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
@@ -26,7 +28,6 @@ class _MovieInfoState extends State<MovieInfo> {
   Map<String, String> dispayData = {};
   Map<String, dynamic> creditData = {};
   List<Cast> casts = [];
-  // final credits = CreditData(id: 0, cast: [], crew: []);
   List<Cast> crews = [];
   List<SimilarMovie> similarMovie = [];
   @override
@@ -59,8 +60,8 @@ class _MovieInfoState extends State<MovieInfo> {
     casts = result!.cast!;
     crews = result.crew!;
     crews..toSet().toList();
-    print("casts: ${jsonEncode(casts)}");
-    print("crews: ${jsonEncode(crews)}");
+    // print("casts: ${jsonEncode(casts)}");
+    // print("crews: ${jsonEncode(crews)}");
     setState(() {
       // Your state change code goes here
     });
@@ -76,6 +77,7 @@ class _MovieInfoState extends State<MovieInfo> {
 
   @override
   Widget build(BuildContext context) {
+    print("Backdrop: ${super.widget.movie.backdropPath}");
     return Scaffold(
       backgroundColor: Colors.black,
       body: CustomScrollView(
@@ -96,7 +98,7 @@ class _MovieInfoState extends State<MovieInfo> {
                 onTap: () async {
                   String? result =
                       await getApiInfo.getMovieTrailer(super.widget.movie.id);
-                  print("XXXX: $result");
+                  // print("XXXX: $result");
                   final youtubeUrl = "https://www.youtube.com/embed/${result}";
                   if (await canLaunch(youtubeUrl)) {
                     await launch(youtubeUrl);
@@ -109,10 +111,11 @@ class _MovieInfoState extends State<MovieInfo> {
                         shape: BoxShape.rectangle,
                         image: DecorationImage(
                           fit: BoxFit.cover,
-                          image:
-                              NetworkImage("https://image.tmdb.org/t/p/w500/" +
-                                  // "https://image.tmdb.org/t/p/original/" +
-                                  super.widget.movie.backdropPath),
+                          image: super.widget.movie.backdropPath == null
+                              ? NetworkImage("https://via.placeholder.com/500")
+                              : NetworkImage(
+                                  "https://image.tmdb.org/t/p/w500/" +
+                                      super.widget.movie.backdropPath),
                         ),
                       ),
                       child: Container(
