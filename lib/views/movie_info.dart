@@ -1,7 +1,7 @@
 // ignore_for_file: unnecessary_null_comparison
 
 import 'dart:convert';
-
+import 'dart:core';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -59,7 +59,16 @@ class _MovieInfoState extends State<MovieInfo> {
     final result = await getApiInfo.getCreditInfo(movieId);
     casts = result!.cast!;
     crews = result.crew!;
-    crews..toSet().toList();
+    // remove duplicate name in crew list;
+    final ids = crews.map((e) => e.name).toSet();
+    crews.retainWhere((x) => ids.remove(x.name));
+    // sort non null item to end of the list
+    // crews.sort((a, b) => a.profilePath == null ? 1 : 0);
+    crews.sort((a, b) => a.profilePath == null
+        ? 1
+        : b.profilePath == null
+            ? -1
+            : a.profilePath.compareTo(b.profilePath));
     // print("casts: ${jsonEncode(casts)}");
     // print("crews: ${jsonEncode(crews)}");
     setState(() {
