@@ -61,7 +61,7 @@ class _SimilarMoviesState extends State<SimilarMovies> {
                           height: 180.0,
                           decoration: new BoxDecoration(
                             borderRadius:
-                                BorderRadius.all(Radius.circular(2.0)),
+                                BorderRadius.all(Radius.circular(12.0)),
                             shape: BoxShape.rectangle,
                             image: new DecorationImage(
                                 fit: BoxFit.cover,
