@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:movieversum/models/actor_data.dart';
 import 'package:movieversum/models/actor_images.dart';
 import 'package:movieversum/models/credit_data.dart';
+import 'package:movieversum/models/movie_data.dart';
 import 'package:movieversum/models/similar_movies_data.dart';
 // import 'package:movieversum/models/movie_data.dart';
 import 'package:movieversum/models/single_movie_data.dart';
@@ -95,6 +96,20 @@ class GetApiInfo {
       final response = await http.get(uri);
       print("Url: $uri");
       SimilarMovieData result = similarMovieDataFromJson(response.body);
+      return result;
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      return null;
+    }
+  }
+
+  Future<MovieData?> GetMoviesByActor(int castId) async {
+    Uri uri = Uri.parse(
+        "https://api.themoviedb.org/3/discover/movie?${baseString}&page=1&with_cast=${castId}");
+    try {
+      final response = await http.get(uri);
+      print("Url: $uri");
+      MovieData result = movieDataFromJson(response.body);
       return result;
     } catch (error, stacktrace) {
       print("Exception occured: $error stackTrace: $stacktrace");

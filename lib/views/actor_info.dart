@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:movieversum/controllers/get_api_info.dart';
 import 'package:movieversum/models/actor_images.dart';
+import 'package:movieversum/models/movie_data.dart';
+import 'package:movieversum/views/movie_info.dart';
 
 class ActorInfo extends StatefulWidget {
   const ActorInfo({Key? key, required this.id}) : super(key: key);
@@ -15,12 +17,24 @@ class _ActorInfoState extends State<ActorInfo> {
   late GetApiInfo getApiInfo = new GetApiInfo();
   Map<String, String> dispayData = {};
   List<Profile> profiles = [];
+  List<Movie> movies = [];
+  MovieData movieData =
+      new MovieData(page: 0, results: [], totalPages: 0, totalResults: 0);
+
+// class MovieData {
+//   MovieData({
+//     required this.page,
+//     required this.results,
+//     required this.totalPages,
+//     required this.totalResults,
+//   });
 
   @override
   void initState() {
     super.initState();
     getActorInfo(super.widget.id);
     getActorImages(super.widget.id);
+    getMoviesByActor(super.widget.id);
   }
 
   void getActorInfo(int castId) async {
@@ -58,6 +72,15 @@ class _ActorInfoState extends State<ActorInfo> {
   void getActorImages(int castId) async {
     final result = await getApiInfo.GetActorImages(super.widget.id);
     profiles = result!.profiles!;
+    setState(() {
+      // Your state change code goes here
+    });
+  }
+
+  void getMoviesByActor(int castId) async {
+    final result = await getApiInfo.GetMoviesByActor(castId);
+    movies = result!.results;
+    movieData = result;
     setState(() {
       // Your state change code goes here
     });
@@ -308,7 +331,7 @@ class _ActorInfoState extends State<ActorInfo> {
               ),
             ),
             Container(
-              height: 270.0,
+              height: 200.0,
               padding: EdgeInsets.only(left: 10.0),
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
@@ -354,9 +377,73 @@ class _ActorInfoState extends State<ActorInfo> {
                 },
               ),
             ),
+            Padding(
+              padding: const EdgeInsets.only(left: 10.0, top: 20.0),
+              child: Text(
+                "MOVIES ABOUT ACTOR",
+                style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 20.0),
+              ),
+            ),
+            _buildMovieCard(movieData, context),
           ],
         ),
       ),
     );
   }
+}
+
+Widget _buildMovieCard(MovieData movies, context) {
+  return Container(
+    height: 200.0,
+    padding: EdgeInsets.only(left: 10.0),
+    child: ListView.builder(
+      scrollDirection: Axis.horizontal,
+      itemCount: movies.results.length,
+      itemBuilder: (context, index) {
+        final movie = movies.results[index];
+        return Container(
+          padding: EdgeInsets.only(top: 10.0, bottom: 10.0, right: 15.0),
+          child: GestureDetector(
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => MovieInfo(movie: movie),
+                ),
+              );
+            },
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Hero(
+                  tag: movie.id,
+                  child: Container(
+                    width: 120.0,
+                    height: 180.0,
+                    decoration: new BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                      shape: BoxShape.rectangle,
+                      image: movie.posterPath == null
+                          ? DecorationImage(
+                              image: AssetImage(
+                                  "assets/images/defaultBackgroundImage.jpg"),
+                              fit: BoxFit.cover,
+                            )
+                          : DecorationImage(
+                              image: NetworkImage(
+                                  'https://image.tmdb.org/t/p/w200/${movie.posterPath}'),
+                              fit: BoxFit.cover,
+                            ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    ),
+  );
 }
