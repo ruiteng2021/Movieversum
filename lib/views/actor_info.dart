@@ -21,14 +21,6 @@ class _ActorInfoState extends State<ActorInfo> {
   MovieData movieData =
       new MovieData(page: 0, results: [], totalPages: 0, totalResults: 0);
 
-// class MovieData {
-//   MovieData({
-//     required this.page,
-//     required this.results,
-//     required this.totalPages,
-//     required this.totalResults,
-//   });
-
   @override
   void initState() {
     super.initState();
@@ -64,26 +56,32 @@ class _ActorInfoState extends State<ActorInfo> {
       default:
         dispayData["gender"] = "Not Specified";
     }
-    setState(() {
-      // Your state change code goes here
-    });
+    if (this.mounted) {
+      setState(() {
+        // Your state change code goes here
+      });
+    }
   }
 
   void getActorImages(int castId) async {
     final result = await getApiInfo.GetActorImages(super.widget.id);
     profiles = result!.profiles!;
-    setState(() {
-      // Your state change code goes here
-    });
+    if (this.mounted) {
+      setState(() {
+        // Your state change code goes here
+      });
+    }
   }
 
   void getMoviesByActor(int castId) async {
     final result = await getApiInfo.GetMoviesByActor(castId);
     movies = result!.results;
     movieData = result;
-    setState(() {
-      // Your state change code goes here
-    });
+    if (this.mounted) {
+      setState(() {
+        // Your state change code goes here
+      });
+    }
   }
 
   @override
@@ -111,6 +109,13 @@ class _ActorInfoState extends State<ActorInfo> {
       ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          toolbarHeight: 50.0,
+          // title: Text("Title"),
+        ),
         body: ListView(
           children: [
             Padding(
