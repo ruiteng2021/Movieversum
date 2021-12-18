@@ -37,6 +37,10 @@ dependencies:
   url_launcher: ^6.0.17
   eva_icons_flutter: ^3.0.0
   flutter_rating_bar: ^4.0.0
+  flutter_launcher_name: "^0.0.1"
+
+flutter_launcher_name:
+  name: "movieverse"
 
 dev_dependencies:
   flutter_test:

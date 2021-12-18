@@ -65,7 +65,7 @@ Widget _buildCard(Movie movie, context) {
             height: 250,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/images/img_not_found.jpg'),
+                image: AssetImage('assets/images/img_not_found.png'),
               ),
             ),
           ),

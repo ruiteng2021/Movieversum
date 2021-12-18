@@ -90,7 +90,7 @@ class _ActorInfoState extends State<ActorInfo> {
       decoration: BoxDecoration(
         image: this.dispayData["profile_path"] == null
             ? DecorationImage(
-                image: AssetImage("assets/images/defaultBackgroundImage.jpg"),
+                image: AssetImage("assets/images/img_not_found.png"),
                 fit: BoxFit.cover,
                 colorFilter: ColorFilter.mode(
                   Colors.white.withOpacity(0.6),
@@ -432,8 +432,8 @@ Widget _buildMovieCard(MovieData movies, context) {
                       shape: BoxShape.rectangle,
                       image: movie.posterPath == null
                           ? DecorationImage(
-                              image: AssetImage(
-                                  "assets/images/defaultBackgroundImage.jpg"),
+                              image:
+                                  AssetImage("assets/images/img_not_found.png"),
                               fit: BoxFit.cover,
                             )
                           : DecorationImage(
