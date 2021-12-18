@@ -16,15 +16,7 @@ class _HomeState extends State<Home> {
     screens.add(new Movies(movieType: "upcoming"));
     screens.add(new Movies(movieType: "top_rated"));
     screens.add(new Movies(movieType: "now_playing"));
-    // screens.add(new Trendings(trendingType: "trending"));
-    // screens.add(
-    //   new Center(
-    //     child: Text(
-    //       "Search",
-    //       style: TextStyle(fontSize: 20),
-    //     ),
-    //   ),
-    // );
+
     return Scaffold(
       bottomNavigationBar: buildBottomBar(),
       body: buildPages(screens),
@@ -38,10 +30,17 @@ class _HomeState extends State<Home> {
       backgroundColor: Colors.black,
       selectedItemColor: Colors.white,
       unselectedItemColor: Colors.white70,
+      // selectedFontSize: 20.0,
+      // unselectedFontSize: 12.0,
       currentIndex: _selectedIndex,
       items: [
         BottomNavigationBarItem(
-          icon: Icon(Icons.favorite_rounded),
+          // icon: Icon(Icons.favorite_rounded),
+          icon: Image.asset(
+            'assets/images/logo.png',
+            height: 30,
+            width: 30,
+          ),
           label: 'Popular',
         ),
         BottomNavigationBarItem(

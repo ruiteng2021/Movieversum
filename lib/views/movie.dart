@@ -15,13 +15,6 @@ class Movies extends StatefulWidget {
 }
 
 class _MoviesState extends State<Movies> {
-  String selection = 'dispensaries';
-  Map selectedCity = {
-    'city': 'London',
-    'city_slug': 'london',
-    'state': 'ON',
-    'country': 'Canada',
-  };
   int currentPage = 1;
 
   late int totalPages = 0;
@@ -34,9 +27,6 @@ class _MoviesState extends State<Movies> {
   @override
   void initState() {
     super.initState();
-    // selection = super.widget.selection;
-    // selectedCity = super.widget.selectedCity;
-    // print(selectedCity['city']);
   }
 
   Future<bool> getMovieData({bool isRefresh = false}) async {
@@ -70,9 +60,6 @@ class _MoviesState extends State<Movies> {
         print(movies.length);
       }
 
-      // print("passengers: ");
-      // print(jsonEncode(result.data));
-
       currentPage++;
 
       totalPages = result.totalPages;
@@ -94,9 +81,6 @@ class _MoviesState extends State<Movies> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      // appBar: AppBar(
-      //   title: Text("Vendors near your location"),
-      // ),
       body: SmartRefresher(
         controller: refreshController,
         enablePullUp: true,

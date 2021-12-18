@@ -1,4 +1,6 @@
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:movieversum/controllers/get_api_info.dart';
 import 'package:movieversum/models/actor_images.dart';
@@ -32,15 +34,18 @@ class _ActorInfoState extends State<ActorInfo> {
   void getActorInfo(int castId) async {
     final result = await getApiInfo.GetActorDetails(super.widget.id);
     dispayData["biography"] = result!.biography;
-    dispayData["birthday"] = result.birthday!.year.toString() +
-        "-" +
-        result.birthday!.month.toString() +
-        "-" +
-        result.birthday!.day.toString();
+    dispayData["birthday"] = result.birthday == null
+        ? ""
+        : result.birthday!.year.toString() +
+            "-" +
+            result.birthday!.month.toString() +
+            "-" +
+            result.birthday!.day.toString();
     dispayData["homepage"] = result.homepage;
     dispayData["imdb_id"] = result.imdbId;
     dispayData["known_for_department"] = result.knownForDepartment;
-    dispayData["place_of_birth"] = result.placeOfBirth;
+    dispayData["place_of_birth"] =
+        result.placeOfBirth == null ? "" : result.placeOfBirth;
     dispayData["popularity"] = result.popularity.toString();
     dispayData["profile_path"] = result.profilePath;
     dispayData["also_known_as"] = result.alsoKnownAs!.join(",");
@@ -90,7 +95,7 @@ class _ActorInfoState extends State<ActorInfo> {
       decoration: BoxDecoration(
         image: this.dispayData["profile_path"] == null
             ? DecorationImage(
-                image: AssetImage("assets/images/img_not_found.png"),
+                image: AssetImage("assets/images/bkg_not_found.jpeg"),
                 fit: BoxFit.cover,
                 colorFilter: ColorFilter.mode(
                   Colors.white.withOpacity(0.6),
@@ -402,7 +407,7 @@ class _ActorInfoState extends State<ActorInfo> {
 
 Widget _buildMovieCard(MovieData movies, context) {
   return Container(
-    height: 200.0,
+    height: 270.0,
     padding: EdgeInsets.only(left: 10.0),
     child: ListView.builder(
       scrollDirection: Axis.horizontal,
@@ -444,6 +449,65 @@ Widget _buildMovieCard(MovieData movies, context) {
                     ),
                   ),
                 ),
+                SizedBox(
+                  height: 10.0,
+                ),
+                Container(
+                  width: 100,
+                  child: Text(
+                    movie.title,
+                    maxLines: 2,
+                    style: TextStyle(
+                        height: 1.4,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 11.0),
+                  ),
+                ),
+                SizedBox(
+                  height: 5.0,
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      movie.voteAverage.toString(),
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 10.0,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(
+                      width: 5.0,
+                    ),
+                    RatingBar(
+                      ratingWidget: RatingWidget(
+                        empty: Icon(
+                          EvaIcons.star,
+                          color: Color(0xFFf4C10F),
+                        ),
+                        full: Icon(
+                          EvaIcons.star,
+                          color: Color(0xFFf4C10F),
+                        ),
+                        half: Icon(
+                          EvaIcons.star,
+                          color: Color(0xFFf4C10F),
+                        ),
+                      ),
+                      itemSize: 8.0,
+                      initialRating: movie.voteAverage / 2,
+                      minRating: 1,
+                      direction: Axis.horizontal,
+                      allowHalfRating: true,
+                      itemCount: 5,
+                      itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
+                      onRatingUpdate: (rating) {
+                        print(rating);
+                      },
+                    )
+                  ],
+                )
               ],
             ),
           ),
