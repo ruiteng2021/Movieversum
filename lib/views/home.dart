@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movieversum/views/movie.dart';
+import 'package:movieversum/views/movie_search_page.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -18,6 +19,24 @@ class _HomeState extends State<Home> {
     screens.add(new Movies(movieType: "now_playing"));
 
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      // appBar: AppBar(
+      //   backgroundColor: Colors.transparent,
+      //   actions: <Widget>[
+      //     Padding(
+      //       padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      //       child: IconButton(
+      //         icon: Icon(
+      //           Icons.search,
+      //           size: 40.0,
+      //         ),
+      //         onPressed: () async {
+      //           showSearch(context: context, delegate: MovieSearchPage());
+      //         },
+      //       ),
+      //     )
+      //   ],
+      // ),
       bottomNavigationBar: buildBottomBar(),
       body: buildPages(screens),
     );

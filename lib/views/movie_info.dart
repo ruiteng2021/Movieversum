@@ -5,13 +5,16 @@ import 'dart:core';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:movieversum/models/credit_data.dart';
 import 'package:movieversum/models/movie_data.dart';
 import 'package:movieversum/controllers/get_api_info.dart';
 import 'package:movieversum/models/similar_movies_data.dart';
 import 'package:movieversum/views/widgets/credits.dart';
 import 'package:movieversum/views/widgets/similar_movies.dart';
+import 'package:movieversum/views/widgets/video_player.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class MovieInfo extends StatefulWidget {
   final Movie movie;
@@ -30,12 +33,14 @@ class _MovieInfoState extends State<MovieInfo> {
   List<Cast> casts = [];
   List<Cast> crews = [];
   List<SimilarMovie> similarMovie = [];
+  late String? trailer;
   @override
   void initState() {
     super.initState();
     getSingleMovieData(super.widget.movie.id);
     getCreditInfo(super.widget.movie.id);
     getSimilarMovies(super.widget.movie.id);
+    getMovieTrailer(super.widget.movie.id);
   }
 
   void getSingleMovieData(int movieId) async {
@@ -84,6 +89,10 @@ class _MovieInfoState extends State<MovieInfo> {
     });
   }
 
+  void getMovieTrailer(int movieId) async {
+    trailer = await getApiInfo.getMovieTrailer(movieId);
+  }
+
   @override
   Widget build(BuildContext context) {
     print("Backdrop: ${super.widget.movie.backdropPath}");
@@ -104,14 +113,28 @@ class _MovieInfoState extends State<MovieInfo> {
                 style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.normal),
               ),
               background: GestureDetector(
-                onTap: () async {
-                  String? result =
-                      await getApiInfo.getMovieTrailer(super.widget.movie.id);
-                  // print("XXXX: $result");
-                  final youtubeUrl = "https://www.youtube.com/embed/${result}";
-                  if (await canLaunch(youtubeUrl)) {
-                    await launch(youtubeUrl);
-                  }
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => VideoPlayerScreen(
+                        controller: YoutubePlayerController(
+                          initialVideoId: this.trailer!,
+                          flags: YoutubePlayerFlags(
+                            autoPlay: true,
+                            mute: false,
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                  // String? result =
+                  //     await getApiInfo.getMovieTrailer(super.widget.movie.id);
+                  // // print("XXXX: $result");
+                  // final youtubeUrl = "https://www.youtube.com/embed/${result}";
+                  // if (await canLaunch(youtubeUrl)) {
+                  //   await launch(youtubeUrl);
+                  // }
                 },
                 child: Stack(
                   children: <Widget>[
@@ -145,6 +168,17 @@ class _MovieInfoState extends State<MovieInfo> {
                               Colors.black.withOpacity(0.9),
                               Colors.black.withOpacity(0.0)
                             ]),
+                      ),
+                    ),
+                    Positioned(
+                      bottom: 0.0,
+                      // top: 0.0,
+                      // left: 0.0,
+                      right: 0.0,
+                      child: Icon(
+                        FontAwesomeIcons.playCircle,
+                        color: Colors.white30,
+                        size: 40.0,
                       ),
                     ),
                   ],

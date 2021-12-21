@@ -39,6 +39,7 @@ dependencies:
   flutter_rating_bar: ^4.0.0
   flutter_launcher_name: ^0.0.1
   flutter_launcher_icons: ^0.8.0
+  youtube_player_flutter: ^8.0.0
 
 flutter_launcher_name:
   name: "movieverse"

@@ -116,4 +116,18 @@ class GetApiInfo {
       return null;
     }
   }
+
+  static Future<MovieData?> FindMovies(String search) async {
+    Uri uri = Uri.parse(
+        "https://api.themoviedb.org/3/search/movie?$baseString&query=$search");
+    try {
+      final response = await http.get(uri);
+      print("Url: $uri");
+      MovieData result = movieDataFromJson(response.body);
+      return result;
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      return null;
+    }
+  }
 }
