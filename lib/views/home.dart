@@ -20,23 +20,23 @@ class _HomeState extends State<Home> {
 
     return Scaffold(
       extendBodyBehindAppBar: true,
-      // appBar: AppBar(
-      //   backgroundColor: Colors.transparent,
-      //   actions: <Widget>[
-      //     Padding(
-      //       padding: const EdgeInsets.symmetric(horizontal: 20.0),
-      //       child: IconButton(
-      //         icon: Icon(
-      //           Icons.search,
-      //           size: 40.0,
-      //         ),
-      //         onPressed: () async {
-      //           showSearch(context: context, delegate: MovieSearchPage());
-      //         },
-      //       ),
-      //     )
-      //   ],
-      // ),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        actions: <Widget>[
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: IconButton(
+              icon: Icon(
+                Icons.search,
+                size: 40.0,
+              ),
+              onPressed: () async {
+                showSearch(context: context, delegate: MovieSearchPage());
+              },
+            ),
+          )
+        ],
+      ),
       bottomNavigationBar: buildBottomBar(),
       body: buildPages(screens),
     );

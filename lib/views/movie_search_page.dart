@@ -8,9 +8,20 @@ class MovieSearchPage extends SearchDelegate<String> {
 
   @override
   ThemeData appBarTheme(BuildContext context) {
-    ThemeData themeData = Theme.of(context);
-
-    return themeData;
+    ThemeData theme = Theme.of(context);
+    // final ColorScheme colorScheme = theme.colorScheme;
+    return theme.copyWith(
+      appBarTheme: AppBarTheme(
+        backgroundColor: Colors.transparent,
+        iconTheme: theme.primaryIconTheme.copyWith(color: Colors.grey),
+      ),
+      inputDecorationTheme: searchFieldDecorationTheme ??
+          InputDecorationTheme(
+            hintStyle: searchFieldStyle ?? theme.inputDecorationTheme.hintStyle,
+            border: InputBorder.none,
+          ),
+    );
+    // return themeData;
   }
 
   @override
@@ -18,7 +29,10 @@ class MovieSearchPage extends SearchDelegate<String> {
     ThemeData themeData = Theme.of(context);
     return [
       IconButton(
-          icon: Icon(Icons.clear, color: themeData.iconTheme.color),
+          icon: Icon(
+            Icons.clear,
+            color: themeData.iconTheme.color,
+          ),
           onPressed: () {
             query = '';
           }),
@@ -50,39 +64,42 @@ class MovieSearchPage extends SearchDelegate<String> {
     // }
 
     return Container(
+        decoration: new BoxDecoration(
+          color: Colors.black,
+        ),
         child: FutureBuilder(
-      future: GetApiInfo.FindMovies(query),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          Object? movies = snapshot.data;
+          future: GetApiInfo.FindMovies(query),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              Object? movies = snapshot.data;
 
-          result = movies;
+              result = movies;
 
-          if (movies == null) {
-            return Center(
-                child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Icon(
-                  Icons.block,
-                  size: 55,
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Text(
-                    "Translations.of(context).trans(transKeyNotFoundMovieMessage)",
-                    style: themeData.textTheme.bodyText1)
-              ],
-            ));
-          }
-          return FindMovies(snapshot.data, 'search');
-          // return Container();
-        } else {
-          return Center(child: CircularProgressIndicator());
-        }
-      },
-    ));
+              if (movies == null) {
+                return Center(
+                    child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Icon(
+                      Icons.block,
+                      size: 55,
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                        "Translations.of(context).trans(transKeyNotFoundMovieMessage)",
+                        style: themeData.textTheme.bodyText1)
+                  ],
+                ));
+              }
+              return FindMovies(snapshot.data, 'search');
+              // return Container();
+            } else {
+              return Center(child: CircularProgressIndicator());
+            }
+          },
+        ));
   }
 
   @override
@@ -92,7 +109,7 @@ class MovieSearchPage extends SearchDelegate<String> {
     result = null;
 
     return Container(
-      color: themeData.backgroundColor,
+      color: Colors.black,
       child: Center(
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
