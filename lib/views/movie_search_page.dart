@@ -12,26 +12,39 @@ class MovieSearchPage extends SearchDelegate<String> {
     // final ColorScheme colorScheme = theme.colorScheme;
     return theme.copyWith(
       appBarTheme: AppBarTheme(
-        backgroundColor: Colors.transparent,
-        iconTheme: theme.primaryIconTheme.copyWith(color: Colors.grey),
+        color: Colors.black,
+        // backgroundColor: Colors.transparent,
+        iconTheme: theme.primaryIconTheme.copyWith(color: Colors.white),
       ),
       inputDecorationTheme: searchFieldDecorationTheme ??
           InputDecorationTheme(
-            hintStyle: searchFieldStyle ?? theme.inputDecorationTheme.hintStyle,
-            border: InputBorder.none,
+            hintStyle: TextStyle(color: Colors.white),
+            // hintStyle: searchFieldStyle ?? theme.inputDecorationTheme.hintStyle,
+            // border: InputBorder.none,
           ),
+      textTheme: TextTheme(
+        subtitle1: TextStyle(
+          color: Colors.white,
+          fontSize: 25.0,
+          // decoration: TextDecoration.none,
+          // decorationStyle: TextDecorationStyle.wavy,
+          // decorationColor: Colors.red,
+          // decorationThickness: 0.5,
+        ),
+      ),
     );
     // return themeData;
   }
 
   @override
   List<Widget> buildActions(BuildContext context) {
-    ThemeData themeData = Theme.of(context);
+    // ThemeData themeData = Theme.of(context);
     return [
       IconButton(
           icon: Icon(
             Icons.clear,
-            color: themeData.iconTheme.color,
+            color: Colors.white,
+            // color: themeData.iconTheme.color,
           ),
           onPressed: () {
             query = '';
@@ -41,13 +54,14 @@ class MovieSearchPage extends SearchDelegate<String> {
 
   @override
   Widget buildLeading(BuildContext context) {
-    ThemeData themeData = Theme.of(context);
+    // ThemeData themeData = Theme.of(context);
 
     return IconButton(
       icon: AnimatedIcon(
         icon: AnimatedIcons.menu_arrow,
         progress: transitionAnimation,
-        color: themeData.iconTheme.color,
+        color: Colors.white,
+        // color: themeData.iconTheme.color,
       ),
       onPressed: () {
         close(context, " ");
