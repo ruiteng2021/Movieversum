@@ -117,17 +117,55 @@ class GetApiInfo {
     }
   }
 
-  static Future<MovieData?> FindMovies(String search) async {
+  static Future<List<Movie>?> FindSearchMovies(String search) async {
     Uri uri = Uri.parse(
-        "https://api.themoviedb.org/3/search/movie?$baseString&query=$search");
+        "https://api.themoviedb.org/3/search/movie?$baseString&page=1&query=$search");
     try {
       final response = await http.get(uri);
       print("Url: $uri");
       MovieData result = movieDataFromJson(response.body);
-      return result;
+      return result.results;
     } catch (error, stacktrace) {
       print("Exception occured: $error stackTrace: $stacktrace");
       return null;
     }
+  }
+
+  static Future<List<Movie>?> FindRepeatSearchedMovies(
+      bool isRefresh, int currentPage, String query, total) async {
+    List<Movie> movies = [];
+    Uri uri = Uri.parse(
+        "https://api.themoviedb.org/3/search/movie?$baseString&language=en-US&page=$currentPage&query=${query}");
+
+    try {
+      final response = await http.get(uri);
+      print("Url: $uri");
+      MovieData result = movieDataFromJson(response.body);
+      if (isRefresh) {
+        movies = result.results;
+      } else {
+        // print(jsonEncode(result.results));
+        movies.addAll(result.results);
+        movies.removeWhere((item) => item.posterPath == null);
+        // print(movies.length);
+      }
+      total["totalPages"] = result.totalPages;
+      return movies;
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      return null;
+    }
+
+    // if (response.statusCode == 200) {
+    //   print("Url: $uri");
+    //   final result = movieDataFromJson(response.body);
+    //   if (isRefresh) {
+    //     movies = result.results;
+    //   } else {
+    //     // print(jsonEncode(result.results));
+    //     movies.addAll(result.results);
+    //     movies.removeWhere((item) => item.posterPath == null);
+    //     // print(movies.length);
+    //   }
   }
 }

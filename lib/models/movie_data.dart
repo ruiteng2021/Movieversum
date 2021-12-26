@@ -64,7 +64,7 @@ class Movie {
   String originalTitle;
   String overview;
   double popularity;
-  String posterPath;
+  String? posterPath;
   // DateTime releaseDate;
   String releaseDate;
   String title;
@@ -81,7 +81,7 @@ class Movie {
         originalTitle: json["original_title"],
         overview: json["overview"],
         popularity: json["popularity"].toDouble(),
-        posterPath: json["poster_path"],
+        posterPath: json["poster_path"] == null ? null : json["poster_path"],
         // releaseDate: DateTime.parse(json["release_date"]),
         releaseDate: json["release_date"],
         title: json["title"],

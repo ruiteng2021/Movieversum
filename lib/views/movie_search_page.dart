@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:movieversum/controllers/get_api_info.dart';
 import 'package:movieversum/models/movie_data.dart';
 import 'package:movieversum/views/find_movies.dart';
+import 'package:movieversum/views/find_movies2.dart';
 
 class MovieSearchPage extends SearchDelegate<String> {
   var result;
@@ -73,16 +74,16 @@ class MovieSearchPage extends SearchDelegate<String> {
   Widget buildResults(BuildContext context) {
     ThemeData themeData = Theme.of(context);
 
-    // if (result != null && result.isNotEmpty) {
-    //   return VerticalMovieList(result, 'search');
-    // }
+    if (result != null && result.isNotEmpty) {
+      // return VerticalMovieList(result, 'search');
+    }
 
     return Container(
         decoration: new BoxDecoration(
           color: Colors.black,
         ),
         child: FutureBuilder(
-          future: GetApiInfo.FindMovies(query),
+          future: GetApiInfo.FindSearchMovies(query),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               Object? movies = snapshot.data;
@@ -107,7 +108,7 @@ class MovieSearchPage extends SearchDelegate<String> {
                   ],
                 ));
               }
-              return FindMovies(snapshot.data, 'search');
+              return FindMovies2(result, query);
               // return Container();
             } else {
               return Center(child: CircularProgressIndicator());

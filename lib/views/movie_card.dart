@@ -35,7 +35,10 @@ Widget _buildCard(Movie movie, context) {
       },
       child: ClipRRect(
         child: CachedNetworkImage(
-          imageUrl: 'https://image.tmdb.org/t/p/original/${movie.posterPath}',
+          imageUrl: movie.posterPath != null
+              ? 'https://image.tmdb.org/t/p/original/${movie.posterPath}'
+              : 'https://via.placeholder.com/150x250',
+          // imageUrl: 'https://image.tmdb.org/t/p/original/${movie.posterPath}',
           imageBuilder: (context, imageProvider) {
             return Container(
               width: 180,
