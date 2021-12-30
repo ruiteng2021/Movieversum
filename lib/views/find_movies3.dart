@@ -49,28 +49,11 @@ class _FindMovies3State extends State<FindMovies3> {
       }
     }
 
-    print("Search key : ${super.widget.query}");
+    print("Search key find_movies3: ${super.widget.query}");
     var total = {"totalPages": 0};
     movies = (await GetApiInfo.FindRepeatSearchedMovies(
-        isRefresh, currentPage, super.widget.query, total))!;
+        movies, isRefresh, currentPage, super.widget.query, total))!;
     if (movies.length > 0) {
-      // Uri uri = Uri.parse(
-      //     "https://api.themoviedb.org/3/search/movie?api_key=d194eb72915bc79fac2eb1a70a71ddd3&language=en-US&page=$currentPage&query=${super.widget.query}");
-
-      // final response = await http.get(uri);
-
-      // if (response.statusCode == 200) {
-      //   print("Url: $uri");
-      //   final result = movieDataFromJson(response.body);
-      //   if (isRefresh) {
-      //     movies = result.results;
-      //   } else {
-      //     // print(jsonEncode(result.results));
-      //     movies.addAll(result.results);
-      //     movies.removeWhere((item) => item.posterPath == null);
-      //     // print(movies.length);
-      //   }
-      // if (total["totalPages"]!.toInt() != 0) {
       currentPage++;
       totalPages = total["totalPages"]!.toInt();
 
@@ -79,8 +62,6 @@ class _FindMovies3State extends State<FindMovies3> {
           // Your state change code goes here
         });
       }
-      //   // print(response.body);
-
       return true;
     } else {
       return false;

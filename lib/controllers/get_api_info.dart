@@ -131,9 +131,9 @@ class GetApiInfo {
     }
   }
 
-  static Future<List<Movie>?> FindRepeatSearchedMovies(
+  static Future<List<Movie>?> FindRepeatSearchedMovies(List<Movie> movies,
       bool isRefresh, int currentPage, String query, total) async {
-    List<Movie> movies = [];
+    // List<Movie> movies = [];
     Uri uri = Uri.parse(
         "https://api.themoviedb.org/3/search/movie?$baseString&language=en-US&page=$currentPage&query=${query}");
 

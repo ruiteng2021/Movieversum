@@ -49,7 +49,7 @@ class _FindMovies2State extends State<FindMovies2> {
       }
     }
 
-    print("Search key : ${super.widget.query}");
+    print("Search key find_movies2: ${super.widget.query}");
     // var total = {"totalPages": 0};
     // movies = (await GetApiInfo.FindRepeatSearchedMovies(
     //     isRefresh, currentPage, super.widget.query, total))!;

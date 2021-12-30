@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movieversum/controllers/get_api_info.dart';
 import 'package:movieversum/models/movie_data.dart';
+import 'package:movieversum/views/find_movies2.dart';
 import 'package:movieversum/views/find_movies3.dart';
 
 class MovieSearchPage extends SearchDelegate<String> {
