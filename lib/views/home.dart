@@ -85,4 +85,8 @@ class _HomeState extends State<Home> {
       children: screens,
     );
   }
+
+  // Widget Search() {
+  //   return MovieSearchPage();
+  // }
 }

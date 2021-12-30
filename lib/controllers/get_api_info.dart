@@ -155,17 +155,5 @@ class GetApiInfo {
       print("Exception occured: $error stackTrace: $stacktrace");
       return null;
     }
-
-    // if (response.statusCode == 200) {
-    //   print("Url: $uri");
-    //   final result = movieDataFromJson(response.body);
-    //   if (isRefresh) {
-    //     movies = result.results;
-    //   } else {
-    //     // print(jsonEncode(result.results));
-    //     movies.addAll(result.results);
-    //     movies.removeWhere((item) => item.posterPath == null);
-    //     // print(movies.length);
-    //   }
   }
 }
